@@ -221,6 +221,7 @@ void __mod_zone_page_state(struct zone *zone, enum zone_stat_item item,
 	long x;
 	long t;
 
+	preempt_disable_rt();
 	x = delta + __this_cpu_read(*p);
 
 	t = __this_cpu_read(pcp->stat_threshold);
@@ -230,6 +231,7 @@ void __mod_zone_page_state(struct zone *zone, enum zone_stat_item item,
 		x = 0;
 	}
 	__this_cpu_write(*p, x);
+	preempt_enable_rt();
 }
 EXPORT_SYMBOL(__mod_zone_page_state);
 
@@ -262,6 +264,7 @@ void __inc_zone_state(struct zone *zone, enum zone_stat_item item)
 	s8 __percpu *p = pcp->vm_stat_diff + item;
 	s8 v, t;
 
+	preempt_disable_rt();
 	v = __this_cpu_inc_return(*p);
 	t = __this_cpu_read(pcp->stat_threshold);
 	if (unlikely(v > t)) {
@@ -270,6 +273,7 @@ void __inc_zone_state(struct zone *zone, enum zone_stat_item item)
 		zone_page_state_add(v + overstep, zone, item);
 		__this_cpu_write(*p, -overstep);
 	}
+	preempt_enable_rt();
 }
 
 void __inc_zone_page_state(struct page *page, enum zone_stat_item item)
@@ -284,6 +288,7 @@ void __dec_zone_state(struct zone *zone, enum zone_stat_item item)
 	s8 __percpu *p = pcp->vm_stat_diff + item;
 	s8 v, t;
 
+	preempt_disable_rt();
 	v = __this_cpu_dec_return(*p);
 	t = __this_cpu_read(pcp->stat_threshold);
 	if (unlikely(v < - t)) {
@@ -292,6 +297,7 @@ void __dec_zone_state(struct zone *zone, enum zone_stat_item item)
 		zone_page_state_add(v - overstep, zone, item);
 		__this_cpu_write(*p, overstep);
 	}
+	preempt_enable_rt();
 }
 
 void __dec_zone_page_state(struct page *page, enum zone_stat_item item)
@@ -1352,6 +1358,7 @@ static const struct file_operations proc_vmstat_file_operations = {
 #endif /* CONFIG_PROC_FS */
 
 #ifdef CONFIG_SMP
+static struct workqueue_struct *vmstat_wq;
 static DEFINE_PER_CPU(struct delayed_work, vmstat_work);
 int sysctl_stat_interval __read_mostly = HZ;
 static cpumask_var_t cpu_stat_off;
@@ -1363,13 +1370,18 @@ static void vmstat_update(struct work_struct *w)
 		 * Counters were updated so we expect more updates
 		 * to occur in the future. Keep on running the
 		 * update worker thread.
-		 */
-		schedule_delayed_work_on(smp_processor_id(),
-				this_cpu_ptr(&vmstat_work),
-			round_jiffies_relative(sysctl_stat_interval));
-	} else {
-		/*
-		 * We did not update any counters so the app may be in
+     * If we were marked on cpu_stat_off clear the flag
+     * so that vmstat_shepherd doesn't schedule us again.
+     */
+    if (!cpumask_test_and_clear_cpu(smp_processor_id(),
+                                    cpu_stat_off)) {
+      queue_delayed_work_on(smp_processor_id(), vmstat_wq,
+                            this_cpu_ptr(&vmstat_work),
+                            round_jiffies_relative(sysctl_stat_interval));
+    }
+  } else {
+    /*
+     * We did not update any counters so the app may be in
 		 * a mode where it does not cause counter updates.
 		 * We may be uselessly running vmstat_update.
 		 * Defer the checking for differentials to the
@@ -1377,23 +1389,6 @@ static void vmstat_update(struct work_struct *w)
 		 */
 		cpumask_set_cpu(smp_processor_id(), cpu_stat_off);
 	}
-}
-
-/*
- * Switch off vmstat processing and then fold all the remaining differentials
- * until the diffs stay at zero. The function is used by NOHZ and can only be
- * invoked when tick processing is not active.
- */
-void quiet_vmstat(void)
-{
-	if (system_state != SYSTEM_RUNNING)
-		return;
-
-	do {
-		if (!cpumask_test_and_set_cpu(smp_processor_id(), cpu_stat_off))
-			cancel_delayed_work(this_cpu_ptr(&vmstat_work));
-
-	} while (refresh_cpu_vm_stats(false));
 }
 
 /*
@@ -1421,6 +1416,31 @@ static bool need_update(int cpu)
 
 
 /*
+ * Switch off vmstat processing and then fold all the remaining differentials
+ * until the diffs stay at zero. The function is used by NOHZ and can only be
+ * invoked when tick processing is not active.
+ */
+void quiet_vmstat(void)
+{
+	if (system_state != SYSTEM_RUNNING)
+		return;
+
+	if (!delayed_work_pending(this_cpu_ptr(&vmstat_work)))
+		return;
+
+	if (!need_update(smp_processor_id()))
+		return;
+
+	/*
+	 * Just refresh counters and do not care about the pending delayed
+	 * vmstat_update. It doesn't fire that often to matter and canceling
+	 * it would be too expensive from this path.
+	 * vmstat_shepherd will take care about that for us.
+	 */
+	refresh_cpu_vm_stats(false);
+}
+
+/*
  * Shepherd worker thread that checks the
  * differentials of processors that have their worker
  * threads for vm statistics updates disabled because of
@@ -1436,18 +1456,24 @@ static void vmstat_shepherd(struct work_struct *w)
 
 	get_online_cpus();
 	/* Check processors whose vmstat worker threads have been disabled */
-	for_each_cpu(cpu, cpu_stat_off)
-		if (need_update(cpu) &&
-			cpumask_test_and_clear_cpu(cpu, cpu_stat_off))
+  for_each_cpu(cpu, cpu_stat_off) {
+    struct delayed_work *dw = &per_cpu(vmstat_work, cpu);
+    if (need_update(cpu)) {
+      if (cpumask_test_and_clear_cpu(cpu, cpu_stat_off))
+        queue_delayed_work_on(cpu, vmstat_wq, dw, 0);
+    } else {
+      /*
+        +			 * Cancel the work if quiet_vmstat has put this
+        +			 * cpu on cpu_stat_off because the work item might
+        +			 * be still scheduled
+        +			 */
+      cancel_delayed_work(dw);
+    }
+  }
+  put_online_cpus();
 
-			schedule_delayed_work_on(cpu, &per_cpu(vmstat_work, cpu),
-				__round_jiffies_relative(sysctl_stat_interval, cpu));
-
-	put_online_cpus();
-
-	schedule_delayed_work(&shepherd,
-		round_jiffies_relative(sysctl_stat_interval));
-
+  schedule_delayed_work(&shepherd,
+    round_jiffies_relative(sysctl_stat_interval));
 }
 
 static void __init start_shepherd_timer(void)
@@ -1462,6 +1488,7 @@ static void __init start_shepherd_timer(void)
 		BUG();
 	cpumask_copy(cpu_stat_off, cpu_online_mask);
 
+	vmstat_wq = alloc_workqueue("vmstat", WQ_FREEZABLE|WQ_MEM_RECLAIM, 0);
 	schedule_delayed_work(&shepherd,
 		round_jiffies_relative(sysctl_stat_interval));
 }

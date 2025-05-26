@@ -175,7 +175,7 @@ struct audio_port_data {
 	uint32_t	    tmp_hdl;
 	/* read or write locks */
 	struct mutex	    lock;
-	spinlock_t	    dsp_lock;
+	raw_spinlock_t	    dsp_lock;
 };
 
 struct shared_io_config {
@@ -197,7 +197,7 @@ struct audio_client {
 	atomic_t	       time_flag;
 	atomic_t	       nowait_cmd_cnt;
 	struct list_head       no_wait_que;
-	spinlock_t             no_wait_que_spinlock;
+	raw_spinlock_t             no_wait_que_spinlock;
 	atomic_t               mem_state;
 	void		       *priv;
 	uint32_t               io_mode;
@@ -208,9 +208,9 @@ struct audio_client {
 	struct mutex	       cmd_lock;
 	/* idx:1 out port, 0: in port*/
 	struct audio_port_data port[2];
-	wait_queue_head_t      cmd_wait;
-	wait_queue_head_t      time_wait;
-	wait_queue_head_t      mem_wait;
+	struct swait_head      cmd_wait;
+	struct swait_head      time_wait;
+	struct swait_head      mem_wait;
 	int                    perf_mode;
 	int					   stream_id;
 	struct device *dev;

@@ -1,7 +1,7 @@
 VERSION = 3
 PATCHLEVEL = 18
-SUBLEVEL = 68
-EXTRAVERSION = 
+SUBLEVEL = 70
+EXTRAVERSION = awesome
 NAME = Diseased Newt
 
 # *DOCUMENTATION*
@@ -406,7 +406,7 @@ KBUILD_CPPFLAGS := -D__KERNEL__
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
-		   -Wno-format-security \
+		   -Wno-format-security -fno-PIE \
 		   -std=gnu89
 
 KBUILD_AFLAGS_KERNEL :=

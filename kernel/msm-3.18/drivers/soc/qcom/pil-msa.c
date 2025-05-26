@@ -559,20 +559,20 @@ int pil_mss_reset_load_mba(struct pil_desc *pil)
 	dma_set_attr(DMA_ATTR_SKIP_ZEROING, &md->attrs_dma);
 	dma_set_attr(DMA_ATTR_STRONGLY_ORDERED, &md->attrs_dma);
 
-	// ret = request_firmware(&dp_fw, dp_name, pil->dev);
-	// if (ret) {
-	// 	dev_warn(pil->dev, "Debug policy not present - %s. Continue.\n",
-	// 					dp_name);
-	// } else {
-	// 	if (!dp_fw || !dp_fw->data) {
-	// 		dev_err(pil->dev, "Invalid DP firmware\n");
-	// 		ret = -ENOMEM;
-	// 		goto err_invalid_fw;
-	// 	}
-	// 	drv->dp_size = dp_fw->size;
-	// 	drv->mba_dp_size += drv->dp_size;
-	// 	drv->mba_dp_size = ALIGN(drv->mba_dp_size, SZ_4K);
-	// }
+	//ret = request_firmware(&dp_fw, dp_name, pil->dev);
+	//if (ret) {
+	//	dev_warn(pil->dev, "Debug policy not present - %s. Continue.\n",
+	//					dp_name);
+	//} else {
+	//	if (!dp_fw || !dp_fw->data) {
+	//		dev_err(pil->dev, "Invalid DP firmware\n");
+	//		ret = -ENOMEM;
+	//		goto err_invalid_fw;
+	//	}
+	//	drv->dp_size = dp_fw->size;
+	//	drv->mba_dp_size += drv->dp_size;
+	//	drv->mba_dp_size = ALIGN(drv->mba_dp_size, SZ_4K);
+	//}
 
 	mba_dp_virt = dma_alloc_attrs(dma_dev, drv->mba_dp_size, &mba_dp_phys,
 				   GFP_KERNEL, &md->attrs_dma);

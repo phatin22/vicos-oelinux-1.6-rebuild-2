@@ -706,6 +706,15 @@ static void handle_delta_cts(struct uart_port *port)
 	port->icount.cts++;
 	wake_up_interruptible(&port->state->port.delta_msr_wait);
 }
+static irqreturn_t msm_hsl_handler(int irq, void *dev_id) {
+	unsigned int vid;
+	struct uart_port *port = dev_id;
+	struct msm_hsl_port *msm_hsl_port = UART_TO_MSM(port);
+
+	vid = msm_hsl_port->ver_id;
+	msm_hsl_write(port, 0, regmap[vid][UARTDM_IMR]);
+  return IRQ_WAKE_THREAD;
+}
 
 static irqreturn_t msm_hsl_irq(int irq, void *dev_id)
 {
