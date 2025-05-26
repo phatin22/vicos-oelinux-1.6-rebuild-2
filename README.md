@@ -1,5 +1,8 @@
 # wire-os
 
+# attempt to introduce mprokos' patches for PREEMPT_RT on Vector
+# not worth it
+
 The main repo for WireOS.
 
 WireOS serves as a nice, stable, and maintained base for Vector CFW.
