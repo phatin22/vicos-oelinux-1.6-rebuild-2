@@ -239,6 +239,12 @@
 	pinctrl-0 = <&uart_console_sleep>;
 };
 
+//&blsp1_uart2 {
+//        status = "ok";
+//        pinctrl-names = "default";
+//        pinctrl-0 = <&uart_console_sleep>;
+//};
+
 / {
 	mtp_batterydata: qcom,battery-data {
 		qcom,rpull-up-kohm = <100>;
@@ -316,15 +322,15 @@
 	pinctrl-0 = <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on &sdc2_cd_on>;
 	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off &sdc2_cd_off>;
 
-	status = "ok";
+	status = "disabled";
 };
 
 &i2c_1 { /* BLSP1 QUP1 */
 };
 
-&mdss_mdp {
-	qcom,mdss-pref-prim-intf = "dsi";
-};
+//&mdss_mdp {
+//	qcom,mdss-pref-prim-intf = "dsi";
+//};
 
 &msm_gpio {
 	pmx_mdss {

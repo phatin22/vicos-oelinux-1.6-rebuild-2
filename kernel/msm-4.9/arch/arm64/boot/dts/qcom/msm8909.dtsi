@@ -468,7 +468,7 @@
 		compatible = "qcom,msm-uartdm-v1.4", "qcom,msm-uart";
 		reg = <0x78af000 0x200>;
 		interrupts = <0 107 0>;
-		status = "disabled";
+		status = "okay";
 		clocks = <&clock_gcc clk_gcc_blsp1_uart1_apps_clk>,
 			 <&clock_gcc clk_gcc_blsp1_ahb_clk>;
 		clock-names = "core", "iface";
@@ -508,7 +508,7 @@
 		qcom,msm-bus,vectors-KBps =
 				<86 512 0 0>,
 				<86 512 500 800>;
-		status = "disabled";
+		status = "okay";
 	};
 
 	qcom,sps {
