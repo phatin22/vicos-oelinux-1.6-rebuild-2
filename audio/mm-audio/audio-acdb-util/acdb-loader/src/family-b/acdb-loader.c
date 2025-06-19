@@ -18,10 +18,10 @@
 #include <string.h>
 #include <dirent.h>
 #include <cutils/list.h>
-#include <linux/msm_ion.h>
-#include <linux/msm_audio.h>
-#include <linux/msm_audio_calibration.h>
-#include <linux/mfd/wcd9xxx/wcd9320_registers.h>
+#include <ucm/linux/msm_ion.h>
+#include <ucm/linux/msm_audio.h>
+#include <ucmlinux/msm_audio_calibration.h>
+#include <ucm/linux/mfd/wcd9xxx/wcd9320_registers.h>
 
 #define u32 uint32_t
 #define u16 uint16_t

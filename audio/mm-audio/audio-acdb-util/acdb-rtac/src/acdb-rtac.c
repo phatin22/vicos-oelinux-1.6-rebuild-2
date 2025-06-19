@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <linux/msm_audio_calibration.h>
+#include <ucm/linux/msm_audio_calibration.h>
 #include "acdb-rtac.h"
 #include "acdb.h"
 #include "acph.h"

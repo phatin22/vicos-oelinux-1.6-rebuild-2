@@ -12,8 +12,8 @@ DEPENDS += "dtc-native"
 
 SRC_URI += "file://defconfig"
 
-#KERNEL_CC = "${WORKSPACE}/old-toolchain/arm/bin/arm-linux-gnueabihf-gcc"
-#KERNEL_LD = "${WORKSPACE}/old-toolchain/arm/bin/arm-linux-gnueabihf-ld"
+KERNEL_CC = "${WORKSPACE}/old-toolchain/arm/bin/arm-linux-gnueabi-gcc"
+KERNEL_LD = "${WORKSPACE}/old-toolchain/arm/bin/arm-linux-gnueabi-ld"
 
 do_compile () {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'avble', 'true', 'false', d)}; then
@@ -79,3 +79,5 @@ do_install:append() {
 do_shared_workdir[dirs] = "${DEPLOY_DIR_IMAGE}"
 KERNEL_VERSION_SANITY_SKIP="1"
 INSANE_SKIP:${PN} += " installed-vs-shipped"
+# these'll get removed by do_install:append
+INSANE_SKIP:${PN} += "debug-files"

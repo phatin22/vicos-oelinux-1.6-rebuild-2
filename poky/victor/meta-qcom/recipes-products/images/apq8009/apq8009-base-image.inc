@@ -141,13 +141,13 @@ do_makesystem() {
     ## -> The minor number corresponds to the partition number (counting from 1)
     ## -> We assume the boot partition is always on the first MMC block device
  
-    if [ "${FACTORY}" == "1" ] || [ "${USER_BUILD}" == "1" ]; then
-        # Enable dm-verity for any FACTORY build or if we are making a USER build
-        KERNEL_CMD_PARAMS="${@ d.getVar("KERNEL_CMD_PARAMS") } dm-verity.dev_wait=1 dm=\"system none ro,0 $FS_SIZE_IN_512_BLOCKS verity $HASH_TYPE 179:##SYSTEM_BOOT_PART## 179:##SYSTEM_BOOT_PART## $DATA_BLOCK_SIZE $HASH_BLOCK_SIZE $DATA_BLOCKS $HASH_OFFSET $HASH_ALGORITHM $ROOT_HASH $SALT\" root=/dev/dm-0"
-    else
-        # Disable dm-verity for Developer builds
-        KERNEL_CMD_PARAMS="${@ d.getVar("KERNEL_CMD_PARAMS") }"
-    fi
+    #if [ "${FACTORY}" == "1" ] || [ "${USER_BUILD}" == "1" ]; then
+    #    # Enable dm-verity for any FACTORY build or if we are making a USER build
+    #    KERNEL_CMD_PARAMS="${@ d.getVar("KERNEL_CMD_PARAMS") } dm-verity.dev_wait=1 dm=\"system none ro,0 $FS_SIZE_IN_512_BLOCKS verity $HASH_TYPE 179:##SYSTEM_BOOT_PART## 179:##SYSTEM_BOOT_PART## $DATA_BLOCK_SIZE $HASH_BLOCK_SIZE $DATA_BLOCKS $HASH_OFFSET $HASH_ALGORITHM $ROOT_HASH $SALT\" root=/dev/dm-0"
+    #else
+    #    # Disable dm-verity for Developer builds
+    #    KERNEL_CMD_PARAMS="${@ d.getVar("KERNEL_CMD_PARAMS") }"
+    #fi
 
     RAMDISK="/dev/null"
     if [ ! -z "${INITRAMFS_IMAGE}" ]; then
@@ -155,16 +155,16 @@ do_makesystem() {
     fi
 
     ## Save kernel cmd line for debugging purposes
-    echo "KERNEL_CMD_PARAMS=$KERNEL_CMD_PARAMS" > ${DEPLOY_DIR_IMAGE}/kernel_params.txt
+    #echo "KERNEL_CMD_PARAMS=$KERNEL_CMD_PARAMS" > ${DEPLOY_DIR_IMAGE}/kernel_params.txt
 
 
     ## NOTE: don't use ${KERNEL_CMD_PARAMS} below - it will be expanded to the same what ${@ d.getVar("KERNEL_CMD_PARAMS") } returns
     ##       we are modifying a local shell variable here, that can only be dereferenced by using $KERNEL_CMD_PARAMS
     ##       c.f. https://stackoverflow.com/questions/48213497/how-do-i-update-a-datastore-variable-from-inside-a-bash-variable
     # Make bootimage
-    ${STAGING_BINDIR_NATIVE}/mkbootimg --kernel ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${MACHINE}.bin \
+    ${STAGING_BINDIR_NATIVE}/mkbootimg --kernel ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE} \
         --ramdisk "$RAMDISK" \
-        --cmdline "$KERNEL_CMD_PARAMS" \
+        --cmdline "" \
         --pagesize ${PAGE_SIZE} \
         --base ${KERNEL_BASE} \
         --ramdisk_offset 0x0 \
