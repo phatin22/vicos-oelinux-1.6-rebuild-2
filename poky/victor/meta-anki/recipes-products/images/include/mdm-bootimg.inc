@@ -44,7 +44,7 @@ gen_buildprop:append() {
    
    # read from /anki/etc/version to prepend build.id
    VICTOR_BUILD_VERSION="${OS_VERSION}"
-   VICTOR_BUILD_REV=`cat ${IMAGE_ROOTFS}/anki/etc/revision`
+   VICTOR_BUILD_REV="PLACEHOLD"
    VICTOR_REV_TAG=""
    if [ ! -z "${VICTOR_BUILD_REV}" ]; then
       VICTOR_REV_TAG="-${VICTOR_BUILD_REV}"
