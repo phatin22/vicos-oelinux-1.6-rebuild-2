@@ -15,3 +15,6 @@
 [submodule "anki/vic-cloudless"]
 	path = anki/vic-cloudless
 	url = https://github.com/kercre123/vic-cloudless
+[submodule "anki/unlocker/vector-gobot"]
+	path = anki/unlocker/vector-gobot
+	url = https://github.com/os-vector/vector-gobot
