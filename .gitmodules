@@ -12,3 +12,6 @@
 [submodule "anki/vic-cloudless"]
 	path = anki/vic-cloudless
 	url = https://github.com/kercre123/vic-cloudless
+[submodule "anki/wired"]
+	path = anki/wired
+	url = https://github.com/Victor-Rebuild/wire_d-1.6-rebuild-2
