@@ -15,3 +15,6 @@
 [submodule "anki/victor-1.6"]
 	path = anki/victor-1.6
 	url = https://github.com/Victor-Rebuild/victor-1.6-rebuild
+[submodule "anki/wired"]
+	path = anki/wired
+	url = https://github.com/Victor-Rebuild/wire_d-1.6-rebuild-2
