@@ -128,6 +128,7 @@ echo
 echo "Setting version as latest"
 echo 1.6.1.$VERSION_CODE > latest
 scp -P 44 -i ~/modder-my-key latest raj-jyot@modder.my.to:/media/raj-jyot/modder-my-to/webserver/otas/1.6-rebuild/$BUILD_STACK/latest
+rm latest
 
 echo
 echo "Unsetting variables"
