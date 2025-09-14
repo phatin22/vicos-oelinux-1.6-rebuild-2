@@ -193,6 +193,10 @@ function build-victor-robot-oskr-image() {
   build-8009-robot-oskr-image
 }
 
+function build-victor-robot-prodperf-image() {
+  build-8009-robot-prodperf-image
+}
+
 function build-victor-robot-user-image() {
   build-8009-robot-user-image
 }

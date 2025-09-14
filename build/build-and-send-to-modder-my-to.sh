@@ -111,6 +111,7 @@ else
 fi
 
 echo "Starting build"
+#export ELLIE=1
 
 echo "Dev ota first"
 time ./build/build.sh -bt dev -v $VERSION_CODE
@@ -132,7 +133,7 @@ rm latest
 
 echo
 echo "Unsetting variables"
-unset $VERSION_CODE $prod_boot_password $oskr_boot_password $OTA_PASS $ota_password $BUILD_STACK
+unset $VERSION_CODE $prod_boot_password $oskr_boot_password $OTA_PASS $ota_password $BUILD_STACK #$ELLIE
 echo
 
 echo "Done! Builds should be at https://modder.my.to/otas/1.6-rebuild/$BUILD_STACK/"

@@ -36,6 +36,13 @@ fi
 
 cd anki/victor-1.6
 
+#if [[ ${ELLIE} = "1" ]]; then
+    git pull
+    cd EXTERNALS
+    git pull
+    cd ../
+#fi
+
 echo "Building Victor"
 ./build/build-v.sh
 ./project/victor/scripts/stage.sh -c Release
