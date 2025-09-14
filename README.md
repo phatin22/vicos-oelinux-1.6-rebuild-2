@@ -25,8 +25,8 @@ sudo chmod 660 /var/run/docker.sock
 3. Clone and build:
 
 ```
-git clone https://github.com/Victor-rebuild/vicos-1.6-rebuild-2 --recurse-submodules
-cd wire-os
+git clone https://github.com/Victor-Rebuild/vicos-oelinux-1.6-rebuild-2 --recurse-submodules
+cd vicos-oelinux-1.6-rebuild-2
 ./build/build.sh -bt <dev/oskr> -bp <boot-passwd> -v <build-increment>
 # boot password not required for dev
 # example: ./build/build.sh -bt dev -v 1
