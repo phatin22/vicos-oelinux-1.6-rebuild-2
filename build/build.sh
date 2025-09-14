@@ -202,6 +202,8 @@ fi
 # 	#sleep 10
 # fi
 
+rm -rf _build/*.ota
+
 if [[ -z $(docker images -q ${CURRENT_CONTAINER_NAME}) ]]; then
 	docker build --build-arg DIR_PATH="${DIRPATH}" --build-arg USER_NAME=$USER --build-arg UID=$(id -u $USER) --build-arg GID=$(id -u $USER) -t ${CURRENT_CONTAINER_NAME} build/
 else

@@ -29,6 +29,11 @@ elif [[ ${PRODorOSKR} == "dev" ]]; then
     export FINAL_BUILD_TYPE=d
 fi
 
+if [[ ! -d anki/victor-1.6/project ]]; then
+    echo "Cloning Victor"
+    git clone --recurse-submodules  https://github.com/Victor-Rebuild/victor-1.6-rebuild -b 1.6-yocto-3 anki/victor-1.6
+fi
+
 cd anki/victor-1.6
 
 echo "Building Victor"
