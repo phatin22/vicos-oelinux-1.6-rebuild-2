@@ -8,7 +8,7 @@ set -e
 # Hidden env vars:
 # 1. AUTO_UPDATE: set to 1 if you want to inhibit the -au interaction
 
-CREATOR="Wire"
+CREATOR="Ellie"
 
 CURRENT_CONTAINER_NAME="rebuild-yocto-builder-7"
 
@@ -115,8 +115,8 @@ fi
 
 is_victor_there_and_compatible
 
-if [[ "$BOT_TYPE" != "oskr" && "$BOT_TYPE" != "dev" && "$BOT_TYPE" != "prod" && "$BOT_TYPE" != "devcloudless" ]]; then
-    usage "BOT_TYPE (-bt) should be 'oskr' or 'dev', got: $BOT_TYPE"
+if [[ "$BOT_TYPE" != "oskr" && "$BOT_TYPE" != "dev" && "$BOT_TYPE" != "prod" && "$BOT_TYPE" != "devcloudless" && "$BOT_TYPE" != "proddev" ]]; then
+    usage "BOT_TYPE (-bt) should be 'oskr', 'dev', 'devcloudless', prod, or proddev, got: $BOT_TYPE"
 fi
 
 if [[ "$DO_SIGN" == 1 && "$OTA_SIGNING_KEY_PASSWORD" == "" ]]; then
@@ -173,7 +173,7 @@ ANKIDEV=1
 if [[ $BOT_TYPE == "oskr" ]]; then
         export BOOT_IMAGE_SIGNING_PASSWORD="${BOOT_PASSWORD}"
 	BOOT_MAKE_COMMAND="make oskrsign"
-elif [[ $BOT_TYPE == "prod" ]]; then
+elif [[ $BOT_TYPE == "prod" && $BOT_TYPE == "proddev" ]]; then
         export BOOT_IMAGE_SIGNING_PASSWORD="${BOOT_PASSWORD}"
 	BOOT_MAKE_COMMAND="make prodsign"
 	ANKIDEV=0

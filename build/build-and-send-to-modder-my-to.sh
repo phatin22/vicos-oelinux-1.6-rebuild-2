@@ -121,7 +121,7 @@ time ./build/build.sh -bt oskr -bp $oskr_boot_password -v $VERSION_CODE
 scp -P 44 -i ~/modder-my-key _build/*.ota raj-jyot@modder.my.to:/media/raj-jyot/modder-my-to/webserver/otas/1.6-rebuild/$BUILD_STACK/oskr/
 
 echo "And finally Prod"
-time ./build/build.sh -bt prod -bp $prod_boot_password -v $VERSION_CODE
+time ./build/build.sh -bt proddev -bp $prod_boot_password -v $VERSION_CODE
 scp -P 44 -i ~/modder-my-key _build/*.ota raj-jyot@modder.my.to:/media/raj-jyot/modder-my-to/webserver/otas/1.6-rebuild/$BUILD_STACK/prod/
 
 echo
