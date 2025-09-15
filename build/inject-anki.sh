@@ -2,6 +2,8 @@
 
 set -e
 
+REBUILD_COMMIT=0b73d0dfd0a8f18047db6cfd7f96f7be25220650
+
 if [[ ${RUN_FROM_MAIN} != "1" ]]; then
     echo "Don't run this standalone, this is supposed to tail off docker-ota-build or vm-ota-build"
     exit 1
@@ -38,6 +40,7 @@ cd anki/victor-1.6
 
 #if [[ ${ELLIE} = "1" ]]; then
     git pull
+    git checkout $REBUILD_COMMIT
     cd EXTERNALS
     git pull
     cd ../
@@ -49,7 +52,7 @@ echo "Building Victor"
 
 cd ../dvcbs-reloaded
 sudo mkdir -p mounted/
-sudo mv ../../_build/vicos-1.6.1.$INCREMENT*.ota mounted/ -v
+sudo mv ../../_build/vicos-1.6.1.$INCREMENT$FINAL_BUILD_TYPE.ota mounted/ -v
 
 sudo ./dvcbs-reloaded.sh -m
 

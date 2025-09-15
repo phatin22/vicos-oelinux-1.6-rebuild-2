@@ -1,0 +1,10 @@
+[Unit]
+Description=Hourly checks for update, made by Ellie for 1.6 rebuild
+Requires=rebuild-update-unengine.service
+
+[Timer]
+OnCalendar=*-*-* *:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
