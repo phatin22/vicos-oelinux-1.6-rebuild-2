@@ -2,11 +2,14 @@
 ## https://modder.my.to/otas/1.6-rebuild/indev/
 ## If you want to use 1.6-rebuild do NOT use these images, use the release ones instead
 
+## 1.6.1.0011 (2025/09/XX)
+Remove python, add rainbow rampost lights back, C++ update engine and rewritten rebooter, put toastito's bot-specific ramposts back in, add prodperf build option so proddev builds work right and we can still make user builds, make the rampost error images point to `error.vicw.xyz` instead of the now dead `support.anki.com`.
+
 ## 1.6.1.0010 (2025/09/13)
 First yocto ota, remove 1.6-specific customization temporarily, temp remove auto update implementation, no need to auth to change wifi networks, re-enable alexa, change faultcodehandler time limits, remove blackjack requests.
 
 ## 1.6.1.0009 (2025/09/01)
-Change 1.6 settings to 1.6-rebuild settings, add face overlays, add Falling and Space Daydream animations, mm-anki-camera always trys to target 30 fps now, brand new auto update system rerwitten from scratch.
+Dev only, change 1.6 settings to 1.6-rebuild settings, add face overlays, add Falling and Space Daydream animations, mm-anki-camera always trys to target 30 fps now, brand new auto update system rerwitten from scratch.
 
 ## 1.6.1.0008 (2025/08/20)
 Wired broke due to it calling for /usr/bin/sleep and not /bin/sleep, this ota is just a fix for that
