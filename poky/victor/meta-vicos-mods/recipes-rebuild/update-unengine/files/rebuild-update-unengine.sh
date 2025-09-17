@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # A very jank auto update solution for 1.6-rebuild
 

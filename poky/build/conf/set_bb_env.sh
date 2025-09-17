@@ -141,7 +141,7 @@ function build-8009-robot-prodperf-image() {
 function build-8009-robot-userdev-image() {
   unset_bb_env
   export MACHINE=apq8009-robot
-  export DISTRO=msm-user
+  export DISTRO=msm-perf
   export VARIANT=perf
   #export PRODUCT=robot
   export DEV="1"
@@ -238,7 +238,7 @@ function build-prod() {
 }
 
 # cleared every time
-cleanList=(victor wired vic-cloud core-image-anki-initramfs rampost anki-version machine-robot-image system-conf system-core extra-conf vic-engine update-os update-engine wireutils wlan-opensource wcnss base-passwd mm-camera initscript-anki rebooter adreno adsprpc vic-anim vic-switchboard vic-gateway-cert base-files libpvictor)
+cleanList=(victor wired vic-cloud core-image-anki-initramfs rampost anki-version update-os update-unengine machine-robot-image system-conf system-core extra-conf vic-engine update-engine wireutils wlan-opensource wcnss base-passwd mm-camera initscript-anki rebooter adreno adsprpc vic-anim vic-switchboard vic-gateway-cert base-files libpvictor)
 
 function clean-oskr() {
   unset_bb_env

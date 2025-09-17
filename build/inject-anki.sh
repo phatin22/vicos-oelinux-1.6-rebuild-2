@@ -39,6 +39,7 @@ fi
 cd anki/victor-1.6
 
 #if [[ ${ELLIE} = "1" ]]; then
+    git checkout Main
     git pull
     git checkout $REBUILD_COMMIT
     cd EXTERNALS
@@ -52,7 +53,7 @@ echo "Building Victor"
 
 cd ../dvcbs-reloaded
 sudo mkdir -p mounted/
-sudo mv ../../_build/vicos-1.6.1.$INCREMENT$FINAL_BUILD_TYPE.ota mounted/ -v
+sudo mv ../../_build/vicos-1.6.1.$INCREMENT*.ota mounted/ -v
 
 sudo ./dvcbs-reloaded.sh -m
 

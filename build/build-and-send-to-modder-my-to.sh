@@ -51,23 +51,24 @@ else
     exit 1
 fi
 
-echo
-echo "Alright we need the passwords now, what's the prod boot password?"
-echo -n "(aka, the ABOOT/qtipri password): "
-read prod_boot_password
+#echo
+#echo "Alright we need the passwords now, what's the prod boot password?"
+#echo -n "(aka, the ABOOT/qtipri password): "
+#read prod_boot_password
 
-if openssl rsa -in ota/qtipri.encrypted.key -passin pass:"$prod_boot_password" -noout 2>/dev/null; then
-    echo "Prod boot image key password confirmed to be correct!"
-else
-    echo
-    echo -e "\033[1;31mProd boot image signing password is incorrect. exiting.\033[0m"
-    echo -e "\033[1;31mHINT: we are using an older version of the key which has the same password as the ABOOT key\033[0m"
-    echo
-    exit 1
-fi
+#if openssl rsa -in ota/qtipri.encrypted.key -passin pass:"$prod_boot_password" -noout 2>/dev/null; then
+#    echo "Prod boot image key password confirmed to be correct!"
+#else
+#    echo
+#    echo -e "\033[1;31mProd boot image signing password is incorrect. exiting.\033[0m"
+#    echo -e "\033[1;31mHINT: we are using an older version of the key which has the same password as the ABOOT key\033[0m"
+#    echo
+#    exit 1
+#fi
 
 echo
-echo "Prod password is good, now what's the oskr boot password?"
+#echo "Prod password is good, now what's the oskr boot password?"
+echo "Alright we need the oskr password now, what's the oskr boot password?"
 echo -n "(aka, qtioskrpri password): "
 read oskr_boot_password
 
@@ -80,23 +81,23 @@ else
     exit 1
 fi
 
-echo
-echo "The boot image passwords seem fine, what is the ota password now?"
-echo -n "(aka, ota_prod.key): "
-read ota_password
+#echo
+#echo "The boot image passwords seem fine, what is the ota password now?"
+#echo -n "(aka, ota_prod.key): "
+#read ota_password
 
-if openssl rsa -in ota/ota_prod.key -passin pass:"$ota_password" -noout 2>/dev/null; then
-    echo "OTA key password confirmed to be correct!"
-    export OTA_PASS=$ota_password
-else
-    echo
-    echo -e "\033[1;31mOTA signing password is incorrect. exiting.\033[0m"
-    echo
-    exit 1
-fi
+#if openssl rsa -in ota/ota_prod.key -passin pass:"$ota_password" -noout 2>/dev/null; then
+#    echo "OTA key password confirmed to be correct!"
+#    export OTA_PASS=$ota_password
+#else
+#    echo
+#    echo -e "\033[1;31mOTA signing password is incorrect. exiting.\033[0m"
+#    echo
+#    exit 1
+#fi
 
 echo
-echo "Just so we're clear, this is gonna build a dev, oskr and prod ota and send it to the $release_or_indev stack on modder.my.to"
+echo "Just so we're clear, this is gonna build a dev, and oskr ota and send it to the $release_or_indev stack on modder.my.to"
 echo "Are we good with this?"
 echo -n "(yes/no): "
 read confirm_send
@@ -121,9 +122,9 @@ echo "Now for OSKR"
 time ./build/build.sh -bt oskr -bp $oskr_boot_password -v $VERSION_CODE
 scp -P 44 -i ~/modder-my-key _build/*.ota raj-jyot@modder.my.to:/media/raj-jyot/modder-my-to/webserver/otas/1.6-rebuild/$BUILD_STACK/oskr/
 
-echo "And finally Prod"
-time ./build/build.sh -bt proddev -bp $prod_boot_password -v $VERSION_CODE
-scp -P 44 -i ~/modder-my-key _build/*.ota raj-jyot@modder.my.to:/media/raj-jyot/modder-my-to/webserver/otas/1.6-rebuild/$BUILD_STACK/prod/
+#echo "And finally Prod"
+#time ./build/build.sh -bt proddev -bp $prod_boot_password -v $VERSION_CODE
+#scp -P 44 -i ~/modder-my-key _build/*.ota raj-jyot@modder.my.to:/media/raj-jyot/modder-my-to/webserver/otas/1.6-rebuild/$BUILD_STACK/prod/
 
 echo
 echo "Setting version as latest"
