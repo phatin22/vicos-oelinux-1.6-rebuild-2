@@ -2,7 +2,7 @@
 ## https://modder.my.to/otas/1.6-rebuild/indev/
 ## If you want to use 1.6-rebuild do NOT use these images, use the release ones instead
 
-## 1.6.1.0012
+## 1.6.1.0012 (2025/09/17)
 Prod builds are canned, actually add the auto update stuff, nothing else right now.
 
 ## 1.6.1.0011 (2025/09/14)

@@ -173,7 +173,7 @@ ANKIDEV=1
 if [[ $BOT_TYPE == "oskr" ]]; then
         export BOOT_IMAGE_SIGNING_PASSWORD="${BOOT_PASSWORD}"
 	BOOT_MAKE_COMMAND="make oskrsign"
-elif [[ $BOT_TYPE == "prod" && $BOT_TYPE == "proddev" ]]; then
+elif [[ $BOT_TYPE == "prod" || $BOT_TYPE == "proddev" ]]; then
         export BOOT_IMAGE_SIGNING_PASSWORD="${BOOT_PASSWORD}"
 	BOOT_MAKE_COMMAND="make prodsign"
 	ANKIDEV=0
@@ -231,7 +231,7 @@ docker run -it --rm \
     ${BOOT_MAKE_COMMAND} && \
     ANKIDEV=${ANKIDEV} make"
 
-RUN_FROM_MAIN=1 INCREMENT=$BUILD_INCREMENT PRODorOSKR=$BOT_TYPE ./build/inject-anki.sh
+# RUN_FROM_MAIN=1 INCREMENT=$BUILD_INCREMENT PRODorOSKR=$BOT_TYPE ./build/inject-anki.sh
 
 echo
 echo -e "\033[1;32mCompleted successfully. Output is in ./_build.\033[0m"
