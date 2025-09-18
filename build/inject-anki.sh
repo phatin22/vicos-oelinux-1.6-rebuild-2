@@ -2,7 +2,7 @@
 
 set -e
 
-REBUILD_COMMIT=0b73d0dfd0a8f18047db6cfd7f96f7be25220650
+REBUILD_COMMIT=0b916a6fe7291a1dae66cc7d371c174952066532
 
 if [[ ${RUN_FROM_MAIN} != "1" ]]; then
     echo "Don't run this standalone, this is supposed to tail off docker-ota-build or vm-ota-build"
