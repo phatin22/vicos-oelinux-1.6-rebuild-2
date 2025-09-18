@@ -2,6 +2,9 @@
 ## https://modder.my.to/otas/1.6-rebuild/indev/
 ## If you want to use 1.6-rebuild do NOT use these images, use the release ones instead
 
+## 1.6.1.0013 (2025/09/18)
+Uncan prod builds, update victor to 0b916a6fe7291a1dae66cc7d371c174952066532.
+
 ## 1.6.1.0012 (2025/09/17)
 Prod builds are canned, actually add the auto update stuff, nothing else right now.
 
