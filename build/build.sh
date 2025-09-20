@@ -231,7 +231,7 @@ docker run -it --rm \
     ${BOOT_MAKE_COMMAND} && \
     ANKIDEV=${ANKIDEV} make"
 
-# RUN_FROM_MAIN=1 INCREMENT=$BUILD_INCREMENT PRODorOSKR=$BOT_TYPE ./build/inject-anki.sh
+RUN_FROM_MAIN=1 INCREMENT=$BUILD_INCREMENT PRODorOSKR=$BOT_TYPE ./build/inject-anki.sh
 
 echo
 echo -e "\033[1;32mCompleted successfully. Output is in ./_build.\033[0m"

@@ -362,7 +362,7 @@ function buildcustomandsign()
   echo "Compressing. This may take a minute."
   umount ${dir}edits
   sysfsbytes=`du -b ${dir}apq8009-robot-sysfs.img | awk '{print $1;}'`
-  gzip -k ${dir}apq8009-robot-sysfs.img
+  gzip --best -k ${dir}apq8009-robot-sysfs.img
   mkdir ${dir}final
   echo "Encrypting"
   openssl enc -e -aes-256-ctr -pass file:${refo}/ota.pas -md md5 -in ${dir}apq8009-robot-sysfs.img.gz -out ${dir}final/apq8009-robot-sysfs.img.dec.gz
