@@ -40,11 +40,8 @@ cd anki/victor-1.6
 
 #if [[ ${ELLIE} = "1" ]]; then
     git checkout Main
-    git pull
+    git pull --recursive
     git checkout $REBUILD_COMMIT
-    cd EXTERNALS
-    git pull
-    cd ../
 #fi
 
 echo "Building Victor"
